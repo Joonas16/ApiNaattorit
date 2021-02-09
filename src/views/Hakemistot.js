@@ -1,10 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import Page from '../components/Page';
+
+/**
+ * Hakemistot-näkymän komponentti, joka avaa teksti TV:n sivun 199.
+ * 
+ * Renderöi sivun Page-komponentilla.
+ */
 
 function Hakemistot() {
     return(
         <View style={styles.container}>
-            <Text>Hakemistot</Text>
+            <Page number={199} />
         </View>
     );
 }
