@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-function Hakemistot() {
+function Koti() {
     return(
         <View style={styles.container}>
-            <Text>Hakemistot</Text>
+            <Text>Koti</Text>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -18,4 +18,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default Hakemistot;
+export default Koti;

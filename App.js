@@ -1,12 +1,12 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faHome, faList, faCloudSun } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faHome, faList, faCloudSun } from '@fortawesome/free-solid-svg-icons';
 
-import Koti from './views/Koti';
-import Hakemistot from './views/Hakemistot';
-import Saa from './views/Saa';
+import Koti from './src/views/Koti';
+import Hakemistot from './src/views/Hakemistot';
+import Saa from './src/views/Saa';
 
 const Tab = createBottomTabNavigator();
 

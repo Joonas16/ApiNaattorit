@@ -6,7 +6,7 @@ function Saa() {
         <View style={styles.container}>
             <Text>Sää</Text>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
