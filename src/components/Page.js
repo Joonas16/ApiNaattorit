@@ -12,23 +12,22 @@ import SubPages from "../components/SubPages";
  * Renderöi tekstit riveittäin SubPages-komponentilla.
  */
 
-function Page({ number }) {
-  const [pageNumber] = useState(number);
+function Page({ number, navigation }) {
   const [data, setData] = useState({});
 
   useEffect(() => {
-    const fetchPage = async (pageNumber) => {
-      const response = await teletextService.getPage(pageNumber);
+    const fetchPage = async (number) => {
+      const response = await teletextService.getPage(number);
       setData(response.teletext.page);
     };
-    fetchPage(pageNumber);
-  }, [pageNumber]);
+    fetchPage(number);
+  }, [number]);
 
   if (!Object.keys(data).length) return <Text>Loading...</Text>;
 
   return (
     <View style={styles.container}>
-      <SubPages data={data} />
+      <SubPages navigation={navigation} data={data} />
     </View>
   );
 }

@@ -8,10 +8,10 @@ import Page from '../components/Page';
  * Renderöi sivun Page-komponentilla.
  */
 
-function Hakemistot() {
+function Hakemistot({navigation}) {
     return(
         <View style={styles.container}>
-            <Page number={199} />
+            <Page navigation={navigation} number={199} />
         </View>
     );
 }

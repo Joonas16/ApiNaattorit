@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import Constants from 'expo-constants';
+//import Constants from 'expo-constants';
 
 import Page from "../components/Page";
 
@@ -10,19 +10,21 @@ import Page from "../components/Page";
  * Renderöi sivun Page-komponentilla.
  */
 
-function Koti() {
+function Koti({ navigation}) {
+
   return (
     <View style={styles.container}>
-      <Page number={100} />
+      <Page navigation={navigation} number={100} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Constants.statusBarHeight,
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

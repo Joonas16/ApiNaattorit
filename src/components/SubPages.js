@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, FlatList } from "react-native";
+import { Text, FlatList, Button, View, TouchableHighlight } from "react-native";
 
 /**
  * Flatlistin käyttämä komponentti joka piirtää yhden alisivun rivin.
@@ -8,31 +8,67 @@ import { Text, FlatList } from "react-native";
  * Palauttaa: Jos rivillä ei ole tekstiä, palauttaa tyhjän rivin, muuten palauttaa tekstiä.
  */
 
-function Line({ line }) {
+function Line({ line, navigation }) {
+  const renderLine = (line) => {
+    return line.split(/(?=\d{3})/g).map((item, index) => {
+      if (/\d{3}/g.test(item.substr(0, 3))) {
+        //Palauta touchableopacity (linkki)
+        const linkPageNumber = item.substr(0, 3);
+        return (
+          <Text key={index}>
+            <TouchableHighlight
+              underlayColor="blue"
+              onPress={() => {
+                console.log("Siirry sivulle " + linkPageNumber);
+                navigation.navigate("Selaa", {
+                  pageNumber: Number(linkPageNumber),
+                });
+              }}
+            >
+              <Text>{item.substr(0, 3)}</Text>
+            </TouchableHighlight>
+            {" " + item.substr(4, item.length - 1)}
+          </Text>
+        );
+      } else {
+        //Palauta tekstiä
+        return <Text key={index}>{item}</Text>;
+      }
+    });
+  };
+
   if (!line.Text) return <Text>{"\n"}</Text>;
-  return <Text style={{ color: "black" }}>{line && line.Text}</Text>;
+
+  return line && renderLine(line.Text);
 }
 
 /**
- * Uudelleenkäytettävä komponentti, jota voidaan käyttää renderöimään yhden sivun dataa.
- *
- * Ottaa propsina: yhden sivun JSON-datan (Objekti).
  * Renderöi toistaiseksi vain sivun ensimmäisen alisivun FlatList-komponentilla rivi kerrallaan
  * Jos muuttujan subPageIndex arvoa muuttaa, näkyvän datan pitäisi vaihtua
  */
 
-function SubPages({ data }) {
-  const [subPageIndex] = useState(0);
+function SubPages({ data, navigation }) {
+  const [subPageIndex, setSubPageIndex] = useState(0);
 
-  console.log(data.subpage[subPageIndex].content[0].line);
+  const changePage = (accumulator) => {
+    if (accumulator === 1 && subPageIndex < data.subpage.length - 1) {
+      setSubPageIndex(subPageIndex + accumulator);
+    } else if (accumulator === -1 && subPageIndex > 0) {
+      setSubPageIndex(subPageIndex + accumulator);
+    }
+  };
 
   return (
-    <FlatList
-      style={{ flex: 1 }}
-      keyExtractor={(_item, index) => index.toString()}
-      data={data.subpage[subPageIndex].content[0].line}
-      renderItem={({ item }) => <Line line={item} />}
-    />
+    <View>
+      <FlatList
+        style={{ flex: 1 }}
+        keyExtractor={(_item, index) => index.toString()}
+        data={data.subpage[subPageIndex].content[0].line}
+        renderItem={({ item }) => <Line navigation={navigation} line={item} />}
+      />
+      <Button title="Seuraava alasivu >" onPress={() => changePage(1)} />
+      <Button title="< Edellinen alasivu" onPress={() => changePage(-1)} />
+    </View>
   );
 }
 
