@@ -6,7 +6,6 @@ import { faHome, faList, faSearch} from '@fortawesome/free-solid-svg-icons';
 
 import Koti from './src/views/Koti';
 import Hakemistot from './src/views/Hakemistot';
-import Selaa from './src/views/Selaa';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,12 +27,12 @@ function App() {
       )}
       
       tabBarOptions={{activeTintColor: '#11cdde', inactiveTintColor: '#C3C3C3', labelStyle: {fontSize: 14}}}>
-        <Tab.Screen name="Koti" component={Koti} />
+        <Tab.Screen name="Koti" initialParams={{pageNumber: 100}} component={Koti} />
         <Tab.Screen name="Hakemistot" component={Hakemistot} />
-        <Tab.Screen name="Selaa" component={Selaa} />
       </Tab.Navigator>
     </NavigationContainer>
   );
 }
 
 export default App;
+

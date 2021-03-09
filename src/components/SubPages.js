@@ -9,38 +9,41 @@ import { Text, FlatList, Button, View, TouchableHighlight } from "react-native";
  */
 
 function Line({ line, navigation }) {
-  const renderLine = (line) => {
-    return line.split(/(?=\d{3})/g).map((item, index) => {
-      if (/\d{3}/g.test(item.substr(0, 3))) {
-        //Palauta touchableopacity (linkki)
-        const linkPageNumber = item.substr(0, 3);
-        return (
-          <Text key={index}>
-            <TouchableHighlight
-              underlayColor="blue"
-              onPress={() => {
-                console.log("Siirry sivulle " + linkPageNumber);
-                navigation.navigate("Selaa", {
-                  pageNumber: Number(linkPageNumber),
-                });
-              }}
-            >
-              <Text>{item.substr(0, 3)}</Text>
-            </TouchableHighlight>
-            {" " + item.substr(4, item.length - 1)}
-          </Text>
-        );
-      } else {
-        //Palauta tekstiä
-        return <Text key={index}>{item}</Text>;
+ 
+      if(Array.isArray(line.run)) {
+        return <Text>{line.run.map((char, index) => {
+          
+          if(char.link && char.Text && char.link === char.Text || char.link && !char.Text) {
+            return  <Text><TouchableHighlight
+           
+            key={index}
+            underlayColor="blue"
+            onPress={() => {
+              navigation.navigate("Koti", {
+                pageNumber: Number(char.link),
+              });
+            }}
+          >
+           <Text>{char.link}</Text>
+          </TouchableHighlight></Text>
+
+          } else if(char.Text && !char.link) {
+          return char.Text
+        } else if(char.length === 1 && !char.Text) {
+          return ' '
+        }
+      })}</Text>
       }
-    });
-  };
-
-  if (!line.Text) return <Text>{"\n"}</Text>;
-
-  return line && renderLine(line.Text);
+      return null
 }
+
+// 	" 201 URHEILU  350 RADIOT 470 VEIKKAUS "
+/* 
+type: "structred" -> subpage[subPageIndex].content[2].line.run[index]
+ensimmäinen link: "199"
+siitä seuraava run[index] halutaan Text
+*/
+
 
 /**
  * Renderöi toistaiseksi vain sivun ensimmäisen alisivun FlatList-komponentilla rivi kerrallaan
@@ -56,6 +59,16 @@ function SubPages({ data, navigation }) {
     } else if (accumulator === -1 && subPageIndex > 0) {
       setSubPageIndex(subPageIndex + accumulator);
     }
+
+  const listSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 10,
+        }}
+      />
+    );
+  };
   };
 
   return (
@@ -63,8 +76,10 @@ function SubPages({ data, navigation }) {
       <FlatList
         style={{ flex: 1 }}
         keyExtractor={(_item, index) => index.toString()}
-        data={data.subpage[subPageIndex].content[0].line}
+        data={data.subpage[subPageIndex].content[2].line}
         renderItem={({ item }) => <Line navigation={navigation} line={item} />}
+        // renderItem={({ item }) => <Text>{item.Text}</Text>}
+        //ItemSeparatorComponent={listSeparator}
       />
       <Button title="Seuraava alasivu >" onPress={() => changePage(1)} />
       <Button title="< Edellinen alasivu" onPress={() => changePage(-1)} />
