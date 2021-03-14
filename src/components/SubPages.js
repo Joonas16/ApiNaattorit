@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Text, FlatList, Button, View, TouchableHighlight } from "react-native";
+import { LinearGradient } from "react-native-svg";
 
 /**
  * Flatlistin käyttämä komponentti joka piirtää yhden alisivun rivin.
@@ -11,11 +12,12 @@ import { Text, FlatList, Button, View, TouchableHighlight } from "react-native";
 function Line({ line, navigation }) {
  
       if(Array.isArray(line.run)) {
+        const regex = /#{2,}|p{10,}|\*{1,}/;
         return <Text>{line.run.map((char, index) => {
           
           if(char.link && char.Text && char.link === char.Text || char.link && !char.Text) {
             return  <Text><TouchableHighlight
-           
+            
             key={index}
             underlayColor="blue"
             onPress={() => {
@@ -28,8 +30,12 @@ function Line({ line, navigation }) {
           </TouchableHighlight></Text>
 
           } else if(char.Text && !char.link) {
-          return char.Text
+            const apuTeksti = char.Text;
+            if (!apuTeksti.match(regex)) { 
+              return char.Text
+            }
         } else if(char.length === 1 && !char.Text) {
+          console.log(char.Text);
           return ' '
         }
       })}</Text>
@@ -70,7 +76,7 @@ function SubPages({ data, navigation }) {
     );
   };
   };
-
+  
   return (
     <View>
       <FlatList
