@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { Text, FlatList, Button, View, TouchableHighlight } from "react-native";
+import { Text, FlatList, Button, View, TouchableHighlight, StyleSheet } from "react-native";
 import { LinearGradient } from "react-native-svg";
 
 /**
  * Flatlistin käyttämä komponentti joka piirtää yhden alisivun rivin.
- *
- * Ottaa propsina: yhden alisivun rivin JSON-datan (Objekti).
- * Palauttaa: Jos rivillä ei ole tekstiä, palauttaa tyhjän rivin, muuten palauttaa tekstiä.
- */
+ * 
+ * Ottaa propsina: Yhden alasivun rivin JSON-datan (line) navigaatio-objektin (navigation).
+ * Palauttaa: Yhden rivin merkistöstä tekstisisällöt ja link
+t */
 
 function Line({ line, navigation }) {
  
@@ -15,24 +15,34 @@ function Line({ line, navigation }) {
         const regex = /#{2,}|p{10,}|\*{1,}/;
         return <Text>{line.run.map((char, index) => {
           
-          if(char.link && char.Text && char.link === char.Text || char.link && !char.Text) {
-            return  <Text><TouchableHighlight
-            
-            key={index}
-            underlayColor="blue"
-            onPress={() => {
-              navigation.navigate("Koti", {
-                pageNumber: Number(char.link),
-              });
-            }}
-          >
-           <Text>{char.link}</Text>
+          if(char.link && char.Text && char.link === char.Text || char.charcode) {
+            return  <Text key={index}><TouchableHighlight
+              key={index}
+              underlayColor="blue"
+              onPress={() => {
+                navigation.navigate("Koti", {
+                  pageNumber: Number(char.link),
+                });
+              }}
+              >
+              {
+                (char.fg && char.bg) &&
+                <Text style={{ color: char.fg, backgroundColor: char.bg, fontSize: 20 }}>{char.link}</Text>
+              }
           </TouchableHighlight></Text>
 
           } else if(char.Text && !char.link) {
-            const apuTeksti = char.Text;
-            if (!apuTeksti.match(regex)) { 
-              return char.Text
+            const isRegex = char.Text;
+            if (!isRegex.match(regex)) { 
+              if (char.fg && char.bg) {
+                if (char.size) {
+                  return <Text style={{ color: char.fg, backgroundColor: char.bg, fontSize: 20}}>{char.Text}</Text>;
+                } else {
+                  return <Text style={{ color: char.fg, backgroundColor: char.bg}}>{char.Text}</Text>;
+                }
+              } else {
+                return char.Text;
+              }
             }
         } else if(char.length === 1 && !char.Text) {
           console.log(char.Text);
@@ -43,16 +53,12 @@ function Line({ line, navigation }) {
       return null
 }
 
-// 	" 201 URHEILU  350 RADIOT 470 VEIKKAUS "
-/* 
-type: "structred" -> subpage[subPageIndex].content[2].line.run[index]
-ensimmäinen link: "199"
-siitä seuraava run[index] halutaan Text
-*/
+
 
 
 /**
- * Renderöi toistaiseksi vain sivun ensimmäisen alisivun FlatList-komponentilla rivi kerrallaan
+ * Renderöi toistaiseksi vain sivun ensimmäisen alasivun FlatList-komponentilla rivi kerrallaan
+ * ("structured")-tyypin dataa
  * Jos muuttujan subPageIndex arvoa muuttaa, näkyvän datan pitäisi vaihtua
  */
 
@@ -65,32 +71,33 @@ function SubPages({ data, navigation }) {
     } else if (accumulator === -1 && subPageIndex > 0) {
       setSubPageIndex(subPageIndex + accumulator);
     }
-
-  const listSeparator = () => {
-    return (
-      <View
-        style={{
-          height: 10,
-        }}
-      />
-    );
-  };
-  };
-  
+  }
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList
-        style={{ flex: 1 }}
+        style={styles.list}
         keyExtractor={(_item, index) => index.toString()}
         data={data.subpage[subPageIndex].content[2].line}
         renderItem={({ item }) => <Line navigation={navigation} line={item} />}
-        // renderItem={({ item }) => <Text>{item.Text}</Text>}
-        //ItemSeparatorComponent={listSeparator}
       />
       <Button title="Seuraava alasivu >" onPress={() => changePage(1)} />
       <Button title="< Edellinen alasivu" onPress={() => changePage(-1)} />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+      width: '100%',
+      height: '100%'
+  },
+  list: {
+    width: '100%',
+    backgroundColor: 'black'
+  },
+  link: {
+    fontSize: 25
+  }
+});
 
 export default SubPages;

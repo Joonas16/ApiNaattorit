@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: Constants.statusBarHeight,
     flex: 1,
+    width: '100%',
     flexGrow: 1,
     backgroundColor: "#fff",
   },

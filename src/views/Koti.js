@@ -23,9 +23,12 @@ function Koti({ route, navigation }) {
  
     return (
       <View style={styles.container}>
-        {pageNumber && <Page navigation={navigation} number={pageNumber} />}
-        <View>
-          <TextInput style={styles.textInput} placeholderTextColor='white' placeholder='Hae sivu numerolla:' onChangeText={(number) => setInput(number)} onSubmitEditing={searchPage}/>
+        <View style={styles.page}>
+          {pageNumber && <Page navigation={navigation} number={pageNumber} />}
+        </View>
+        
+        <View style={styles.textInput}>
+          <TextInput style={{textAlign: 'center'}} placeholderTextColor='white' placeholder='Hae sivu numerolla:' onChangeText={(number) => setInput(number)} onSubmitEditing={searchPage}/>
         </View>
       </View>
     );
@@ -36,13 +39,22 @@ function Koti({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    display: 'flex'
   },
   textInput: {
     backgroundColor: 'gray',
-    color: 'white'
+    color: 'white',
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+    width: '89%',
+  },
+  page: {
+    flex: 10
   }
 });
 
