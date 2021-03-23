@@ -1,16 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Text,
   FlatList,
-  Button,
   View,
   TouchableHighlight,
   StyleSheet,
 } from "react-native";
-import { LinearGradient } from "react-native-svg";
-import GestureRecognizer, {
-  swipeDirections,
-} from "react-native-swipe-gestures";
 import _ from "lodash";
 
 /**
@@ -21,6 +16,29 @@ import _ from "lodash";
 t */
 
 function Line({ line, navigation }) {
+  function filterOutGraphicalColors(color) {
+    switch (color) {
+      case "gwhite":
+        return "white";
+      case "gblack":
+        return "black";
+      case "gred":
+        return "red";
+      case "ggreen":
+        return "green";
+      case "gyellow":
+        return "yellow";
+      case "gblue":
+        return "blue";
+      case "gmagenta":
+        return "magenta";
+      case "gcyan":
+        return "cyan";
+      default:
+        return color;
+    }
+  }
+
   if (Array.isArray(line.run)) {
     const regex = /#{2,}|p{10,}|\*{1,}/;
     return (
@@ -33,7 +51,6 @@ function Line({ line, navigation }) {
             return (
               <Text key={index}>
                 <TouchableHighlight
-                  key={index}
                   underlayColor="blue"
                   onPress={() => {
                     navigation.navigate("Koti", {
@@ -44,8 +61,8 @@ function Line({ line, navigation }) {
                   {char.fg && char.bg && (
                     <Text
                       style={{
-                        color: char.fg,
-                        backgroundColor: char.bg,
+                        color: filterOutGraphicalColors(char.fg),
+                        backgroundColor: filterOutGraphicalColors(char.bg),
                         fontSize: 20,
                       }}
                     >
@@ -59,15 +76,17 @@ function Line({ line, navigation }) {
             const isRegex = char.Text;
             if (!isRegex.match(regex)) {
               if (char.fg && char.bg) {
-                //if (char.size) {
-                //return <Text style={{ color: char.fg, backgroundColor: char.bg, fontSize: 20}}>{char.Text}</Text>;
-                //} else {
                 return (
-                  <Text style={{ color: char.fg, backgroundColor: char.bg }}>
+                  <Text
+                    key={index}
+                    style={{
+                      color: filterOutGraphicalColors(char.fg),
+                      backgroundColor: filterOutGraphicalColors(char.bg),
+                    }}
+                  >
                     {char.Text}
                   </Text>
                 );
-                //}
               } else {
                 return char.Text;
               }
@@ -90,16 +109,6 @@ function Line({ line, navigation }) {
  */
 
 function SubPages({ data, navigation }) {
-  const [subPageIndex, setSubPageIndex] = useState(0);
-
-  const changePage = (accumulator) => {
-    if (accumulator === 1 && subPageIndex < data.subpage.length - 1) {
-      setSubPageIndex(subPageIndex + accumulator);
-    } else if (accumulator === -1 && subPageIndex > 0) {
-      setSubPageIndex(subPageIndex + accumulator);
-    }
-  };
-
   const subPageLines = data.subpage
     .map((subpage) => subpage.content[2].line)
     .reduce(
@@ -117,12 +126,6 @@ function SubPages({ data, navigation }) {
         data={uniqueSubPageLines}
         renderItem={({ item }) => <Line navigation={navigation} line={item} />}
       />
-      {/*
-      <Button title="Seuraava alasivu >" onPress={() => changePage(1)} />
-      <Button title="< Edellinen alasivu" onPress={() => changePage(-1)} />
-      onEndReached={() => changePage(1)}
-      onEndReachedThreshold={.9}
-       */}
     </View>
   );
 }

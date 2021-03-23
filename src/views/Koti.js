@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, TextInput, Button, Text } from "react-native";
+import { View, StyleSheet, TextInput } from "react-native";
 import Page from "../components/Page";
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import GestureRecognizer from 'react-native-swipe-gestures';
 
 /**
  * Kotinäkymän komponentti, joka avaa oletuksena teksti TV:n sivun 100.
