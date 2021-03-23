@@ -1,73 +1,70 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, TextInput } from "react-native";
 import Page from "../components/Page";
-import GestureRecognizer from 'react-native-swipe-gestures';
 
 /**
  * Kotinäkymän komponentti, joka avaa oletuksena teksti TV:n sivun 100.
- * 
+ *
  * Renderöi sivun Page-komponentilla.
  */
 
 function Koti({ route, navigation }) {
   const [pageNumber, setPageNumber] = useState(undefined);
-  const [input, setInput] = useState(0)
-
-  const config = {
-    velocityThreshold: 0.8,
-    directionalOffsetThreshold: 80
-  };
+  const [input, setInput] = useState(0);
 
   const searchPage = () => {
-    setPageNumber(input)
-  }
+    setPageNumber(input);
+  };
 
   useEffect(() => {
     setPageNumber(route.params.pageNumber);
   }, [route.params]);
 
- 
-    return (
-      <View style={styles.container}>
-        <GestureRecognizer
-          onSwipeLeft={() => setPageNumber(pageNumber + 1)}
-          onSwipeRight={() => setPageNumber(pageNumber - 1)}
-          config={config}
-        >
-        <View style={styles.page}>
-          {pageNumber && <Page navigation={navigation} number={pageNumber} />}
-        </View>
-        
-        <View style={styles.textInput}>
-          <TextInput style={{textAlign: 'center'}} placeholderTextColor='white' placeholder='Hae sivu numerolla:' onChangeText={(number) => setInput(number)} onSubmitEditing={searchPage}/>
-        </View>
-        </GestureRecognizer>
+  return (
+    <View style={styles.container}>
+      <View style={styles.page}>
+        {pageNumber && (
+          <Page
+            navigation={navigation}
+            setPageNumber={setPageNumber}
+            number={pageNumber}
+          />
+        )}
       </View>
-    );
-  
- 
+
+      <View style={styles.textInput}>
+        <TextInput
+          style={{ textAlign: "center" }}
+          placeholderTextColor="white"
+          placeholder="Hae sivu numerolla:"
+          onChangeText={(number) => setInput(number)}
+          onSubmitEditing={searchPage}
+        />
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
+    width: "100%",
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    display: 'flex'
+    display: "flex",
   },
   textInput: {
-    backgroundColor: 'gray',
-    color: 'white',
+    backgroundColor: "gray",
+    color: "white",
     alignItems: "center",
     justifyContent: "center",
     flex: 1,
-    width: '89%',
+    width: "89%",
   },
   page: {
-    flex: 10
-  }
+    flex: 10,
+  },
 });
 
 export default Koti;

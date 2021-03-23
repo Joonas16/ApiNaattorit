@@ -28,7 +28,7 @@ function Hakemistot({ route, navigation }) {
  
     return (
       <View style={styles.container}>
-        <Page navigation={navigation} number={pageNumber ? pageNumber : 199} />
+        <Page navigation={navigation} setPageNumber={setPageNumber} number={pageNumber ? pageNumber : 199} />
         <View>
           <TextInput style={styles.textInput} placeholderTextColor='white' placeholder='Hae sivu numerolla:' onChangeText={(number) => setInput(number)} onSubmitEditing={searchPage}/>
         </View>
