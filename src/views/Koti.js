@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, TextInput, Button, Text } from "react-native";
 import Page from "../components/Page";
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 /**
  * Kotinäkymän komponentti, joka avaa oletuksena teksti TV:n sivun 100.
@@ -11,6 +12,11 @@ import Page from "../components/Page";
 function Koti({ route, navigation }) {
   const [pageNumber, setPageNumber] = useState(undefined);
   const [input, setInput] = useState(0)
+
+  const config = {
+    velocityThreshold: 0.8,
+    directionalOffsetThreshold: 80
+  };
 
   const searchPage = () => {
     setPageNumber(input)
@@ -23,6 +29,11 @@ function Koti({ route, navigation }) {
  
     return (
       <View style={styles.container}>
+        <GestureRecognizer
+          onSwipeLeft={() => setPageNumber(pageNumber + 1)}
+          onSwipeRight={() => setPageNumber(pageNumber - 1)}
+          config={config}
+        >
         <View style={styles.page}>
           {pageNumber && <Page navigation={navigation} number={pageNumber} />}
         </View>
@@ -30,6 +41,7 @@ function Koti({ route, navigation }) {
         <View style={styles.textInput}>
           <TextInput style={{textAlign: 'center'}} placeholderTextColor='white' placeholder='Hae sivu numerolla:' onChangeText={(number) => setInput(number)} onSubmitEditing={searchPage}/>
         </View>
+        </GestureRecognizer>
       </View>
     );
   
