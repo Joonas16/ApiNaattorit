@@ -15,7 +15,7 @@ import SubPages from "../components/SubPages";
 
 function Page({ number, setPageNumber, navigation }) {
   const [data, setData] = useState({});
- 
+
   const config = {
     velocityThreshold: 0.3,
     directionalOffsetThreshold: 160,
@@ -30,16 +30,15 @@ function Page({ number, setPageNumber, navigation }) {
   }, [number]);
 
   const nextPage = () => {
-    
     if (data.nextpg) {
       setPageNumber(Number(data.nextpg));
-      console.log('Next page:', Number(data.nextpg))
+      console.log("Next page:", Number(data.nextpg));
     }
   };
   const prevPage = () => {
     if (data.prevpg) {
       setPageNumber(Number(data.prevpg));
-      console.log('Prev page:', Number(data.prevpg))
+      console.log("Prev page:", Number(data.prevpg));
     }
   };
 
