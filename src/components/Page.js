@@ -59,11 +59,11 @@ function Page({ number, setPageNumber, navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Constants.statusBarHeight,
+    paddingTop: "5%",
     flex: 1,
     width: "100%",
     flexGrow: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "black",
   },
 });
 
