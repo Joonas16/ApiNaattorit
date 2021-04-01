@@ -105,8 +105,9 @@ export default function Suosikit({ navigation }) {
           />
           <Input
             style={styles.input}
-            containerStyle={{ marginTop: 10, width: "50%" }}
+            containerStyle={{ marginTop: 10, width: "50%"}}
             placeholder="Type pagenumber"
+            keyboardType="numeric"
             label="PAGENUMBER"
             onChangeText={(number) => setPagenumber(number)}
             value={pagenumber}
@@ -155,16 +156,19 @@ export default function Suosikit({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: "5%",
+    backgroundColor: "black",
+    paddingTop: "5%",
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
   },
   inputGroup: {
     display: "flex",
+    color: "white",
     flexDirection: "row",
     alignContent: "center",
     justifyContent: "center",
+    
   },
   inputContainer: {
     display: "flex",
@@ -179,11 +183,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   subTitle: {
+    
     fontSize: 13,
   },
   listItem: {
     borderBottomWidth: 0.6,
     borderBottomColor: "#c3c3c3",
+  },
+  input: {
+    color: "white"
   },
   overlay: {
     display: "flex",

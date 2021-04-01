@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, TextInput } from "react-native";
+import { View, StyleSheet, TextInput} from "react-native";
 import Page from "../components/Page";
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faSearch} from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Kotinäkymän komponentti, joka avaa oletuksena teksti TV:n sivun 100.
@@ -33,10 +35,15 @@ function Koti({ route, navigation }) {
       </View>
 
       <View style={styles.textInput}>
+        <FontAwesomeIcon size={18} icon={ faSearch } color="white"/>
         <TextInput
-          style={{ textAlign: "center" }}
+          style={{paddingBottom: 6, color: "white"}}
+          fontSize={15}
+          keyboardType="numeric"
+          selectionColor={"#428AF8"}
+          keyboardAppearance="dark"
           placeholderTextColor="white"
-          placeholder="Hae sivu numerolla:"
+          placeholder="Sivun haku"
           onChangeText={(number) => setInput(number)}
           onSubmitEditing={searchPage}
         />
@@ -49,21 +56,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-    display: "flex",
+    backgroundColor: "black",
   },
   textInput: {
-    backgroundColor: "gray",
+    backgroundColor: "rgba(0,0,0,0.7)",
     color: "white",
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    flex: 1,
-    width: "89%",
+    justifyContent: "space-evenly",
+    borderLeftColor: "gray",
+    borderTopColor: "gray",
+    borderWidth: 1,
+    flex: 0.65,
+    marginLeft: "60%"
   },
   page: {
-    flex: 10,
+    flex: 15,
   },
 });
 

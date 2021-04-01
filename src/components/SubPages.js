@@ -5,8 +5,12 @@ import {
   View,
   TouchableHighlight,
   StyleSheet,
+  Dimensions,
+  Image
 } from "react-native";
 import _ from "lodash";
+import AppLoading from 'expo-app-loading';
+import { useFonts} from 'expo-font';
 
 /**
  * Flatlistin käyttämä komponentti joka piirtää yhden alisivun rivin.
@@ -14,6 +18,9 @@ import _ from "lodash";
  * Ottaa propsina: Yhden alasivun rivin JSON-datan (line) navigaatio-objektin (navigation).
  * Palauttaa: Yhden rivin merkistöstä tekstisisällöt ja link
 t */
+
+
+
 
 function Line({ line, navigation }) {
   function filterOutGraphicalColors(color) {
@@ -38,12 +45,13 @@ function Line({ line, navigation }) {
         return color;
     }
   }
-
-  if (Array.isArray(line.run)) {
+  var i = 0;
+if (Array.isArray(line.run)) {
     const regex = /#{2,}|p{10,}|\*{1,}/;
     return (
       <Text>
         {line.run.map((char, index) => {
+          i = i + 1
           if (
             (char.link && char.Text && char.link === char.Text) ||
             char.charcode
@@ -61,8 +69,10 @@ function Line({ line, navigation }) {
                   {char.fg && char.bg && (
                     <Text
                       style={{
+                        fontWeight: "bold",
                         color: filterOutGraphicalColors(char.fg),
                         backgroundColor: filterOutGraphicalColors(char.bg),
+                        fontFamily: 'Inter-SemiBoldItalic',
                         fontSize: 20,
                       }}
                     >
@@ -74,7 +84,33 @@ function Line({ line, navigation }) {
             );
           } else if (char.Text && !char.link) {
             const isRegex = char.Text;
+
             if (!isRegex.match(regex)) {
+
+            // Etusivun otsikko kovakoodi
+            //
+              if (i == 10 && char.Text.includes("Teksti-TV")) {
+                console.log(i)
+                return (
+                  
+                <Text
+                  key={index}
+                  style={{
+                    color: filterOutGraphicalColors(char.fg),
+                    backgroundColor: filterOutGraphicalColors(char.bg),
+                    fontWeight: "bold",
+                    fontSize: 35,
+                    lineHeight: 40,
+                    fontFamily: 'Inter-SemiBoldItalic',
+                  }}
+                >
+                  <Image style={styles.tinyLogo} source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Ylen_logo.svg/1200px-Ylen_logo.svg.png',}}/> {char.Text} 
+                </Text>)
+              }
+            //
+            // ^^ Etusivun kovakoodaus loppuu
+            
+
               if (char.fg && char.bg) {
                 return (
                   <Text
@@ -82,10 +118,12 @@ function Line({ line, navigation }) {
                     style={{
                       color: filterOutGraphicalColors(char.fg),
                       backgroundColor: filterOutGraphicalColors(char.bg),
+                      fontFamily: 'Inter-SemiBoldItalic',
                     }}
                   >
                     {char.Text}
                   </Text>
+                  
                 );
               } else {
                 return char.Text;
@@ -109,6 +147,14 @@ function Line({ line, navigation }) {
  */
 
 function SubPages({ data, navigation }) {
+  let [fontsLoaded] = useFonts({
+    'Inter-SemiBoldItalic': 'https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12',
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+  
   const subPageLines = data.subpage
     .map((subpage) => subpage.content[2].line)
     .reduce(
@@ -121,7 +167,7 @@ function SubPages({ data, navigation }) {
   return (
     <View style={styles.container}>
       <FlatList
-        style={styles.list}
+        style={styles.container}
         keyExtractor={(_item, index) => index.toString()}
         data={uniqueSubPageLines}
         renderItem={({ item }) => <Line navigation={navigation} line={item} />}
@@ -132,16 +178,21 @@ function SubPages({ data, navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    height: "100%",
-  },
-  list: {
-    width: "100%",
+    height: "102.2%",
+    width: Dimensions.get('window').width,
     backgroundColor: "black",
   },
-  link: {
-    fontSize: 25,
+  list: {
+    
+    width: Dimensions.get('window').width,
+    backgroundColor: "black",
   },
+  tinyLogo: {
+    width: 40,
+    height: 40,
+
+  },
+  
 });
 
 export default SubPages;
