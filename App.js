@@ -10,7 +10,6 @@ import Suosikit from './src/views/Suosikit';
 
 const Tab = createBottomTabNavigator();
 
-
 function App() {
   
   return (
@@ -28,8 +27,7 @@ function App() {
           },
         }
       )}
-      
-      tabBarOptions={{activeTintColor: '#11cdde', inactiveTintColor: '#ffffff', activeBackgroundColor: '#000000', inactiveBackgroundColor: '#000000', labelStyle: {fontSize: 14}}}>
+      tabBarOptions={{activeTintColor: '#11cdde', inactiveTintColor: '#ffffff', activeBackgroundColor: '#000000', inactiveBackgroundColor: '#000000', labelStyle: {fontSize: 14}, keyboardHidesTabBar: true}}>
         <Tab.Screen name="Koti" initialParams={{pageNumber: 100}} component={Koti} />
         <Tab.Screen name="Suosikit" component={Suosikit} />
         <Tab.Screen name="Hakemistot" component={Hakemistot} />
