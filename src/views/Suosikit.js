@@ -5,7 +5,7 @@ import * as SQLite from "expo-sqlite";
 
 export default function Suosikit({ navigation }) {
   const [name, setName] = useState("");
-  const [pagenumber, setPagenumber] = useState("");
+  const [pagenumber, setPagenumber] = useState('');
   const [favouriteList, setFavouriteList] = useState([]);
   const db = SQLite.openDatabase("favouritelistdb.db");
   const [visible, setVisible] = useState(false);
@@ -77,9 +77,9 @@ export default function Suosikit({ navigation }) {
         </ListItem.Subtitle>
       </ListItem.Content>
       <ListItem.Chevron
-        onPress={() => navigation.navigate("Koti", { pageNumber: pagenumber })}
         size={35}
         color="#c3c3c3"
+        onPress={() => navigation.navigate("Koti", { pageNumber: item.pagenumber })}
       />
     </ListItem>
   );
@@ -131,7 +131,7 @@ export default function Suosikit({ navigation }) {
           <Text style={{ fontSize: 25, fontWeight: "bold" }}>
             {deleteName}{" "}
             <Text style={{ fontSize: 15, fontWeight: "normal", color: "gray" }}>
-              ,{deletePagenumber}
+              {deletePagenumber}
             </Text>
           </Text>
         </View>
@@ -140,7 +140,7 @@ export default function Suosikit({ navigation }) {
             type="outline"
             titleStyle={{ fontSize: 15 }}
             title="Cancel"
-            onPress={toggleOverlay}
+            onPress={() => setVisible(!visible)}
           />
           <Button
             titleStyle={{ fontSize: 15 }}

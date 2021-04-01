@@ -40,7 +40,7 @@ function Koti({ route, navigation }) {
           style={{paddingBottom: 6, color: "white"}}
           fontSize={15}
           keyboardType="numeric"
-          selectionColor={"#428AF8"}
+          selectionColor="#428AF8"
           keyboardAppearance="dark"
           placeholderTextColor="white"
           placeholder="Sivun haku"
