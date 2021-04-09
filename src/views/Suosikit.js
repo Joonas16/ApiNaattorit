@@ -29,7 +29,6 @@ export default function Suosikit({ navigation }) {
     updateList();
   }, []);
 
-  // Save product
   const saveItem = () => {
     db.transaction(
       (tx) => {
@@ -41,9 +40,10 @@ export default function Suosikit({ navigation }) {
       null,
       updateList
     );
+    setName('')
+    setPagenumber('')
   };
 
-  // Update productlist
   const updateList = () => {
     db.transaction((tx) => {
       tx.executeSql("select * from favourite;", [], (_, { rows }) =>
@@ -52,7 +52,6 @@ export default function Suosikit({ navigation }) {
     });
   };
 
-  // Delete product
   const deleteItem = (id) => {
     db.transaction(
       (tx) => {
