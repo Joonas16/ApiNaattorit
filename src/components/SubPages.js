@@ -90,7 +90,7 @@ if (Array.isArray(line.run)) {
             // Etusivun otsikko kovakoodi
             //
               if (i == 10 && char.Text.includes("Teksti-TV")) {
-                console.log(i)
+
                 return (
                   
                 <Text
