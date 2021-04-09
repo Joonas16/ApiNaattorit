@@ -58,28 +58,20 @@ if (Array.isArray(line.run)) {
           ) {
             return (
               <Text key={index}>
-                <TouchableHighlight
-                  underlayColor="blue"
-                  onPress={() => {
-                    navigation.navigate("Koti", {
-                      pageNumber: Number(char.link),
-                    });
-                  }}
-                >
                   {char.fg && char.bg && (
                     <Text
+                    onPress={() => { navigation.navigate("Koti", {pageNumber: Number(char.link)}) }}
                       style={{
                         fontWeight: "bold",
                         color: filterOutGraphicalColors(char.fg),
                         backgroundColor: filterOutGraphicalColors(char.bg),
                         fontFamily: 'Inter-SemiBoldItalic',
-                        fontSize: 20,
+                        fontSize: 21,
                       }}
                     >
                       {char.link}
                     </Text>
                   )}
-                </TouchableHighlight>
               </Text>
             );
           } else if (char.Text && !char.link) {
