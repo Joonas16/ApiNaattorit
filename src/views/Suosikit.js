@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import { Input, ListItem, Button, Overlay } from "react-native-elements";
 import * as SQLite from "expo-sqlite";
+import { StateContext } from "../state";
 
 export default function Suosikit({ navigation }) {
+  const { state } = useContext(StateContext)
   const [name, setName] = useState("");
   const [pagenumber, setPagenumber] = useState('');
   const [favouriteList, setFavouriteList] = useState([]);
@@ -19,6 +21,11 @@ export default function Suosikit({ navigation }) {
     setDeleteId(id);
     setDeletepagenumber(pagenumber);
   };
+
+  useEffect(() => {
+    setName(state.page.name)
+    setPagenumber(state.page.number)
+  }, [state]);
 
   useEffect(() => {
     db.transaction((tx) => {
@@ -104,7 +111,7 @@ export default function Suosikit({ navigation }) {
           />
           <Input
             style={styles.input}
-            containerStyle={{ marginTop: 10, width: "50%"}}
+            containerStyle={{ marginTop: 10, width: "50%" }}
             placeholder="Type pagenumber"
             keyboardType="numeric"
             label="PAGENUMBER"
@@ -167,7 +174,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignContent: "center",
     justifyContent: "center",
-    
+
   },
   inputContainer: {
     display: "flex",
@@ -182,7 +189,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   subTitle: {
-    
+
     fontSize: 13,
   },
   listItem: {

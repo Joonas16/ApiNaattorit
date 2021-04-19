@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import Constants from "expo-constants";
 import GestureRecognizer from "react-native-swipe-gestures";
 
-import teletextService from "../services/teletext";
+import { StateContext } from "../state";
 import SubPages from "../components/SubPages";
+import { setPageNumber } from "../state/actions";
 
 /**
  * Yhden sivun datan hakeva komponentti.
@@ -13,36 +13,28 @@ import SubPages from "../components/SubPages";
  * Renderöi tekstit riveittäin SubPages-komponentilla.
  */
 
-function Page({ number, setPageNumber, navigation }) {
-  const [data, setData] = useState({});
+function Page({ navigation }) {
+  const { state, dispatch } = useContext(StateContext)
 
   const config = {
     velocityThreshold: 0.3,
     directionalOffsetThreshold: 160,
   };
 
-  useEffect(() => {
-    const fetchPage = async (number) => {
-      const response = await teletextService.getPage(number);
-      setData(response.teletext.page);
-    };
-    fetchPage(number);
-  }, [number]);
-
   const nextPage = () => {
-    if (data.nextpg) {
-      setPageNumber(Number(data.nextpg));
-      console.log("Next page:", Number(data.nextpg));
+    if (state.page.nextpg) {
+      dispatch(setPageNumber(Number(state.page.nextpg)))
+      console.log("Next page:", Number(state.page.nextpg));
     }
   };
   const prevPage = () => {
-    if (data.prevpg) {
-      setPageNumber(Number(data.prevpg));
-      console.log("Prev page:", Number(data.prevpg));
+    if (state.page.prevpg) {
+      dispatch(setPageNumber(Number(state.page.prevpg)))
+      console.log("Prev page:", Number(state.page.prevpg));
     }
   };
 
-  if (!Object.keys(data).length) return <Text>Loading...</Text>;
+  if (Object.entries(state.page).length === 0) return <Text style={styles.loadingText}>Loading...</Text>;
 
   return (
     <View style={styles.container}>
@@ -51,7 +43,7 @@ function Page({ number, setPageNumber, navigation }) {
         onSwipeRight={prevPage}
         config={config}
       >
-        <SubPages navigation={navigation} data={data} />
+        <SubPages navigation={navigation} data={state.page} />
       </GestureRecognizer>
     </View>
   );
@@ -65,6 +57,10 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     backgroundColor: "black",
   },
+  loadingText: {
+    marginTop: 'auto',
+    color: 'white'
+  }
 });
 
 export default Page;

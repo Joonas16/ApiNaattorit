@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, StyleSheet, TextInput } from "react-native";
 import Page from "../components/Page";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faSearch} from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { StateContext } from "../state";
+import teletextService from "../services/teletext";
+import { setPage, setPageNumber } from "../state/actions";
 
 /**
  * Hakemistot-näkymän komponentti, joka avaa teksti TV:n sivun 199.
@@ -11,34 +14,33 @@ import { faSearch} from '@fortawesome/free-solid-svg-icons';
  */
 
 function Hakemistot({ route, navigation }) {
-  const [pageNumber, setPageNumber] = useState(null);
+  const { dispatch } = useContext(StateContext);
   const [input, setInput] = useState(0);
 
   const searchPage = () => {
-    setPageNumber(input);
+    if (Number.isInteger(Number(input))) {
+      navigation.navigate("Koti", { pageNumber: Number(input) })
+    }
   };
 
   useEffect(() => {
-    if (route.params) {
-      setPageNumber(route.params.pageNumber);
-    } else {
-      setPageNumber(199);
-    }
-  }, [route.params]);
+    teletextService.getPage(199).then(response => {
+      dispatch(setPage(response))
+      dispatch(setPageNumber(199))
+    })
+  }, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.page}>
-      <Page
-        navigation={navigation}
-        setPageNumber={setPageNumber}
-        number={pageNumber ? pageNumber : 199}
-      />
+        <Page
+          navigation={navigation}
+        />
       </View>
       <View style={styles.textInput}>
-      <FontAwesomeIcon size={18} icon={ faSearch } color="white"/>
-      <TextInput
-          style={{paddingBottom: 6, color: "white"}}
+        <FontAwesomeIcon size={18} icon={faSearch} color="white" />
+        <TextInput
+          style={{ paddingBottom: 6, color: "white" }}
           fontSize={15}
           keyboardType="numeric"
           selectionColor={"#428AF8"}
