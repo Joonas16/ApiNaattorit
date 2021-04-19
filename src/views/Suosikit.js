@@ -49,7 +49,7 @@ export default function Suosikit({ navigation }) {
       setName(name)
       setPagenumber(pagenumber)
     }
-    else if (!isnum){
+    else if (!pagenumber.match(/^[0-9]+$/)){
       alert('Sivunumero voi sisältää vain numeroita!')
       setName(name)
       setPagenumber(pagenumber)

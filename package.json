@@ -35,26 +35,13 @@
     "react-native-screens": "~2.15.2",
     "react-native-svg": "^12.1.0",
     "react-native-swipe-gestures": "^1.0.5",
-    "react-native-web": "^0.15.7"
+    "react-native-web": "~0.13.12"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.24.0",
+    "eslint": "^7.23.0",
     "eslint-plugin-react": "^7.22.0"
   },
-  "private": true,
-  "name": "apinaattorit",
-  "version": "1.0.0",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Joonas16/ApiNaattorit.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Joonas16/ApiNaattorit/issues"
-  },
-  "homepage": "https://github.com/Joonas16/ApiNaattorit#readme",
-  "description": ""
+  "private": true
 }
