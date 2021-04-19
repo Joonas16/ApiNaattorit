@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import { StyleSheet, Text, View, FlatList, Alert } from "react-native";
 import { Input, ListItem, Button, Overlay } from "react-native-elements";
 import * as SQLite from "expo-sqlite";
 import { StateContext } from "../state";
-
+  
 export default function Suosikit({ navigation }) {
+  let isnum = /^\d+$/.test(pagenumber);
   const { state } = useContext(StateContext)
   const [name, setName] = useState("");
   const [pagenumber, setPagenumber] = useState('');
@@ -37,6 +38,28 @@ export default function Suosikit({ navigation }) {
   }, []);
 
   const saveItem = () => {
+
+    // Alert jos nimi tai sivunumero ei ole oikein
+    if (name == '') {
+      alert('Sivun nimi ei voi olla tyhjä')
+      setName(name)
+      setPagenumber(pagenumber)
+    } else if (pagenumber == ''){
+      alert('Sivunumero ei voi olla tyhjä')
+      setName(name)
+      setPagenumber(pagenumber)
+    }
+    else if (!pagenumber.match(/^[0-9]+$/)){
+      alert('Sivunumero voi sisältää vain numeroita!')
+      setName(name)
+      setPagenumber(pagenumber)
+    } else if (pagenumber.length > 3){
+      alert('Sivunumero voi olla maksimissaan 3 numeroa')
+      setName(name)
+      setPagenumber(pagenumber)
+    } 
+     else {
+
     db.transaction(
       (tx) => {
         tx.executeSql(
@@ -50,6 +73,7 @@ export default function Suosikit({ navigation }) {
     setName('')
     setPagenumber('')
   };
+}
 
   const updateList = () => {
     db.transaction((tx) => {
