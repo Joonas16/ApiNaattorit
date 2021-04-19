@@ -45,7 +45,7 @@ export default function Suosikit({ navigation }) {
       setName(name)
       setPagenumber(pagenumber)
     } else if (pagenumber == ''){
-      alert('Sivunumeron täytyy sisältää vain numeroita')
+      alert('Sivunumero ei voi olla tyhjä')
       setName(name)
       setPagenumber(pagenumber)
     }
