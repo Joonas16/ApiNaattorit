@@ -3,7 +3,6 @@ import {
   Text,
   FlatList,
   View,
-  TouchableHighlight,
   StyleSheet,
   Dimensions,
   Image

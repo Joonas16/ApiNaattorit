@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet, TextInput} from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import { View, StyleSheet, TextInput, Text } from "react-native";
 import Page from "../components/Page";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faSearch} from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { StateContext } from "../state/index";
+import teletextService from '../services/teletext'
+import axios from 'axios'
+import { setPage, setPageNumber } from "../state/actions";
 
 /**
  * Kotinäkymän komponentti, joka avaa oletuksena teksti TV:n sivun 100.
@@ -10,42 +14,68 @@ import { faSearch} from '@fortawesome/free-solid-svg-icons';
  * Renderöi sivun Page-komponentilla.
  */
 
-function Koti({ route, navigation }) {
-  const [pageNumber, setPageNumber] = useState(undefined);
-  const [input, setInput] = useState(0);
 
-  const searchPage = () => {
-    setPageNumber(input);
+
+function Koti({ route, navigation }) {
+  const { state, dispatch } = useContext(StateContext)
+  const [input, setInput] = useState('');
+
+
+  const searchPage = async () => {
+    const pageNumber = Number(input)
+    if (Number.isInteger(pageNumber)) {
+      setInput('')
+      try {
+        const response = await teletextService.getPage(pageNumber)
+        dispatch(setPage(response))
+        dispatch(setPageNumber(pageNumber))
+      } catch (error) {
+        console.log(error)
+      }
+
+    }
   };
 
   useEffect(() => {
-    setPageNumber(route.params.pageNumber);
+    dispatch(setPageNumber(route.params.pageNumber));
   }, [route.params]);
+
+  useEffect(() => {
+
+    const source = axios.CancelToken.source()
+    teletextService.getPage(state.pageNumber)
+      .then(response => dispatch(setPage(response)))
+
+    return () => {
+      source.cancel()
+    }
+  }, [state.pageNumber])
+
 
   return (
     <View style={styles.container}>
       <View style={styles.page}>
-        {pageNumber && (
+        {route.params.pageNumber && (
           <Page
             navigation={navigation}
-            setPageNumber={setPageNumber}
-            number={pageNumber}
           />
         )}
       </View>
 
       <View style={styles.textInput}>
-        <FontAwesomeIcon size={18} icon={ faSearch } color="white"/>
+        <Text style={styles.pageNumber}>{state.pageNumber}</Text>
+        <FontAwesomeIcon size={18} icon={faSearch} color="white" />
         <TextInput
-          style={{paddingBottom: 6, color: "white"}}
+          style={{ paddingBottom: 6, color: "white" }}
           fontSize={15}
+          value={input}
           keyboardType="numeric"
           selectionColor="#428AF8"
           keyboardAppearance="dark"
           placeholderTextColor="white"
           placeholder="Sivun haku"
           onChangeText={(number) => setInput(number)}
-          onSubmitEditing={searchPage}
+          onSubmitEditing={() => searchPage()}
         />
       </View>
     </View>
@@ -69,6 +99,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flex: 0.65,
     marginLeft: "60%"
+  },
+  pageNumber: {
+    color: "white",
   },
   page: {
     flex: 15,
