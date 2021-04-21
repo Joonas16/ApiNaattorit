@@ -2,8 +2,7 @@ import React, { useReducer } from 'react'
 import reducer from './reducer'
 
 const initialState = {
-    page: {},
-    pageNumber: 100
+    pages: [],
 }
 
 export const StateContext = React.createContext(initialState)

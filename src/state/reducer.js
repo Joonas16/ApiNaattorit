@@ -2,16 +2,17 @@ import teletextService from '../services/teletext'
 
 export default reducer = (state, action) => {
     switch (action.type) {
-        case 'SET_PAGE':
+        case 'INIT_PAGES':
             return {
                 ...state,
-                page: action.payload
+                pages: action.payload
             }
-        case 'SET_PAGE_NUMBER':
+        case 'ADD_PAGE':
             return {
                 ...state,
-                pageNumber: action.payload
+                pages: state.pages.concat(action.payload)
             }
+       
         default:
             break;
     }

@@ -1,13 +1,13 @@
-export const setPageNumber = (pageNumber) => {
+export const initPages = (pages) => {
     return {
-        type: 'SET_PAGE_NUMBER',
-        payload: pageNumber,
+        type: 'INIT_PAGES',
+        payload: pages,
     }
 }
 
-export const setPage = (page) => {
+export const addPage = (page) => {
     return {
-        type: 'SET_PAGE',
+        type: 'ADD_PAGE',
         payload: page,
     }
 }

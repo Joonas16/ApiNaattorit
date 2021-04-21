@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import GestureRecognizer from "react-native-swipe-gestures";
+import React, { useContext, useRef } from "react";
+import { View, Text, StyleSheet, Dimensions, Animated, FlatList } from "react-native";
 
 import { StateContext } from "../state";
 import SubPages from "../components/SubPages";
-import { setPageNumber } from "../state/actions";
+import { addPage } from "../state/actions";
+import teletextService from '../services/teletext'
 
 /**
  * Yhden sivun datan hakeva komponentti.
@@ -13,38 +13,63 @@ import { setPageNumber } from "../state/actions";
  * Renderöi tekstit riveittäin SubPages-komponentilla.
  */
 
+const { width } = Dimensions.get('screen')
+
 function Page({ navigation }) {
   const { state, dispatch } = useContext(StateContext)
+  //const [data, setData] = useState(null)
+  
 
-  const config = {
-    velocityThreshold: 0.3,
-    directionalOffsetThreshold: 160,
-  };
+  const onEndReached = async () => {
+     const newPage = await teletextService.getPage(Number(state.pages[state.pages.length - 1].nextpg))
+    // const newNextPage = await teletextService.getPage(Number(state.nextPage.number) + 1)c
+    dispatch(addPage(newPage))
+    console.log('end reached')
 
-  const nextPage = () => {
-    if (state.page.nextpg) {
-      dispatch(setPageNumber(Number(state.page.nextpg)))
-      console.log("Next page:", Number(state.page.nextpg));
-    }
-  };
-  const prevPage = () => {
-    if (state.page.prevpg) {
-      dispatch(setPageNumber(Number(state.page.prevpg)))
-      console.log("Prev page:", Number(state.page.prevpg));
-    }
-  };
+  }
+  const scrollX = useRef(new Animated.Value(0)).current;
 
-  if (Object.entries(state.page).length === 0) return <Text style={styles.loadingText}>Loading...</Text>;
+  const renderItem = ({ item, index }) => {
+    const inputRange = [(index - 1) * width, index * width, (index + 1) * width]
+    const scale = scrollX.interpolate({
+      inputRange,
+      outputRange: [width * 0.3, 0, width * 0.3]
+    })
+
+    return(
+      <View style={{flex: 1}}>
+        <Animated.View style={{flex: 1, transform: [{ translateX: scale }]}}>
+          <SubPages navigation={navigation} data={item} />
+        </Animated.View>
+      </View>
+      
+    )
+  }
+
+  const data = state.pages.length ? state.pages : null
+
+  if(!data) return <Text style={styles.loadingText}>Loading...</Text>
 
   return (
     <View style={styles.container}>
-      <GestureRecognizer
-        onSwipeLeft={nextPage}
-        onSwipeRight={prevPage}
-        config={config}
-      >
-        <SubPages navigation={navigation} data={state.page} />
-      </GestureRecognizer>
+      <Animated.FlatList
+        horizontal
+        pagingEnabled
+        onEndReached={onEndReached}
+        initialScrollIndex={data.length === 3 ? 1 : 0}
+        onEndReachedThreshold={.5}
+        snapToAlignment={"start"}
+        snapToInterval={width}
+        data={data}
+        keyExtractor={(item) => `${item.number}`}
+        renderItem={renderItem}
+        scrollEventThrottle={16}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          { useNativeDriver: true }
+        )}
+        contentContainerStyle={{paddingBottom: 10}}
+      />
     </View>
   );
 }

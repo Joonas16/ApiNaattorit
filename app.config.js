@@ -7,7 +7,7 @@ export default {
   orientation: "portrait",
   icon: "./assets/icon.png",
   splash: {
-    image: "./assets/splash.png",
+    image: "./assets/icon.png",
     resizeMode: "contain",
     backgroundColor: "#ffffff",
   },
@@ -20,12 +20,12 @@ export default {
   },
   android: {
     adaptiveIcon: {
-      foregroundImage: "./assets/adaptive-icon.png",
+      foregroundImage: "./assets/icon.png",
       backgroundColor: "#FFFFFF",
     },
   },
   web: {
-    favicon: "./assets/favicon.png",
+    favicon: "./assets/icon.png",
   },
   extra: {
     apiUrl: process.env.API_URL,
