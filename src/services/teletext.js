@@ -12,7 +12,7 @@ const config = {
 
 const getPage = async (pageNumber) => {
     const response = await axios.get(`${baseUrl}/pages/${pageNumber}.json`, config);
-    return response.data;
+    return response.data.teletext.page;
 };
 
 export default {

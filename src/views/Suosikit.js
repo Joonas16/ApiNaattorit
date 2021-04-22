@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import { StyleSheet, Text, View, FlatList, Alert } from "react-native";
 import { Input, ListItem, Button, Overlay } from "react-native-elements";
 import * as SQLite from "expo-sqlite";
-
+import { StateContext } from "../state";
+  
 export default function Suosikit({ navigation }) {
+  let isnum = /^\d+$/.test(pagenumber);
+  const { state } = useContext(StateContext)
   const [name, setName] = useState("");
   const [pagenumber, setPagenumber] = useState('');
   const [favouriteList, setFavouriteList] = useState([]);
@@ -21,6 +24,11 @@ export default function Suosikit({ navigation }) {
   };
 
   useEffect(() => {
+    setName(state.page.name)
+    setPagenumber(state.page.number)
+  }, [state]);
+
+  useEffect(() => {
     db.transaction((tx) => {
       tx.executeSql(
         "create table if not exists favourite (id integer primary key not null, name text, pagenumber number);"
@@ -30,6 +38,28 @@ export default function Suosikit({ navigation }) {
   }, []);
 
   const saveItem = () => {
+
+    // Alert jos nimi tai sivunumero ei ole oikein
+    if (name == '') {
+      alert('Sivun nimi ei voi olla tyhjä')
+      setName(name)
+      setPagenumber(pagenumber)
+    } else if (pagenumber == ''){
+      alert('Sivunumero ei voi olla tyhjä')
+      setName(name)
+      setPagenumber(pagenumber)
+    }
+    else if (!pagenumber.match(/^[0-9]+$/)){
+      alert('Sivunumero voi sisältää vain numeroita!')
+      setName(name)
+      setPagenumber(pagenumber)
+    } else if (pagenumber.length > 3){
+      alert('Sivunumero voi olla maksimissaan 3 numeroa')
+      setName(name)
+      setPagenumber(pagenumber)
+    } 
+     else {
+
     db.transaction(
       (tx) => {
         tx.executeSql(
@@ -43,6 +73,7 @@ export default function Suosikit({ navigation }) {
     setName('')
     setPagenumber('')
   };
+}
 
   const updateList = () => {
     db.transaction((tx) => {
@@ -104,7 +135,7 @@ export default function Suosikit({ navigation }) {
           />
           <Input
             style={styles.input}
-            containerStyle={{ marginTop: 10, width: "50%"}}
+            containerStyle={{ marginTop: 10, width: "50%" }}
             placeholder="Type pagenumber"
             keyboardType="numeric"
             label="PAGENUMBER"
@@ -167,7 +198,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignContent: "center",
     justifyContent: "center",
-    
+
   },
   inputContainer: {
     display: "flex",
@@ -182,7 +213,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   subTitle: {
-    
+
     fontSize: 13,
   },
   listItem: {
