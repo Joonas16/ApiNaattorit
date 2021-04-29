@@ -52,8 +52,8 @@ if (Array.isArray(line.run)) {
         {line.run.map((char, index) => {
           i = i + 1
           if (
-            (char.link && char.Text && char.link === char.Text) ||
-            char.charcode
+            (char.link && char.Text && char.link === char.Text) || 
+            char.charcode && char.length < 5
           ) {
             return (
               <Text key={index}>
