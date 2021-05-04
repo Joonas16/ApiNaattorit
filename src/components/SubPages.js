@@ -114,7 +114,6 @@ if (Array.isArray(line.run)) {
                   >
                     {char.Text}
                   </Text>
-                  
                 );
               } else {
                 return char.Text;
@@ -127,8 +126,11 @@ if (Array.isArray(line.run)) {
         })}
       </Text>
     );
+  } else {
+    return (
+      <Text></Text>
+    );
   }
-  return null;
 }
 
 /**
