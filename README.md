@@ -1,4 +1,5 @@
 # ApiNaattorit Teksti-TV
+<img src="./assets/screenshot.jpg" alt="Logo" width="160" height="320">
 
 ## Installing project locally
 
