@@ -36,7 +36,7 @@ function Koti({ route, navigation }) {
     const source = axios.CancelToken.source()
 
     async function init() {
-      console.log('init pages called currentpg:', route.params.pageNumber)
+      console.log('init pages called, currentpg:', route.params.pageNumber)
       const currentPage = await teletextService.getPage(route.params.pageNumber)
       
       let nextPage = undefined

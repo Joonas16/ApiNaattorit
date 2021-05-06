@@ -1,5 +1,3 @@
-import teletextService from '../services/teletext'
-
 export default reducer = (state, action) => {
     switch (action.type) {
         case 'INIT_PAGES':
