@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, StyleSheet, TextInput, Dimensions } from "react-native";
+import { View, StyleSheet, TextInput, Text } from "react-native";
 import Page from "../components/Page";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -72,6 +72,7 @@ function Koti({ route, navigation }) {
       </View>
 
       <View style={styles.textInput}>
+      <Text style={styles.pageNumber}>100</Text>
         <FontAwesomeIcon size={18} icon={faSearch} color="white" />
         <TextInput
           style={{ color: 'white' }}
@@ -83,7 +84,7 @@ function Koti({ route, navigation }) {
           placeholderTextColor="white"
           placeholder="Sivun haku"
           onChangeText={(number) => setInput(number)}
-          onSubmitEditing={() => searchPage()}
+          onSubmitEditing={searchPage}
         />
       </View>
     </View>
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
     borderLeftColor: "gray",
     borderTopColor: "gray",
     borderWidth: 1,
-    width: 100,
+    width: 140,
     height: 30,
     bottom: 0,
     right: 0
