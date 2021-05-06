@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, StyleSheet, TextInput, Dimensions} from "react-native";
+import { View, StyleSheet, TextInput, Dimensions } from "react-native";
 import Page from "../components/Page";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -10,25 +10,21 @@ import { initPages } from "../state/actions";
 
 /**
  * Kotinäkymän komponentti, joka avaa oletuksena teksti TV:n sivun 100.
- *
  * Renderöi sivun Page-komponentilla.
  */
 
-const { width, heigth } = Dimensions.get('screen')
- 
 function Koti({ route, navigation }) {
   const { state, dispatch } = useContext(StateContext)
   const [input, setInput] = useState('');
 
+  const flatListRef = React.useRef()
 
-  const searchPage = async () => {
-    const pageNumber = Number(input)
-    if (Number.isInteger(pageNumber)) {
+  const searchPage = () => {
+    const newPage = Number(input)
+    if (Number.isInteger(newPage)) {
       setInput('')
       try {
-        const response = await teletextService.getPage(pageNumber)
-        // dispatch(setPage(response))
-        // dispatch(setPageNumber(pageNumber))
+        navigation.navigate("Koti", {pageNumber: newPage})
       } catch (error) {
         console.log(error)
       }
@@ -36,29 +32,24 @@ function Koti({ route, navigation }) {
     }
   };
 
-  // useEffect(() => {
-  //   dispatch(setPageNumber(route.params.pageNumber));
-  // }, [route.params]);
-
   useEffect(() => {
-    console.log('kotijs useeffect run')
-
     const source = axios.CancelToken.source()
-    
-    async function init() {
-      const currentPage = await teletextService.getPage(route.params.pageNumber)
-      let prevPage = null;
-      if(currentPage.prevpg) {
-        prevPage = await teletextService.getPage(Number(currentPage.prevpg))
-      }
-      const nextPage = await teletextService.getPage(Number(currentPage.nextpg))
 
-      if(route.params.pageNumber === 100) {
-        dispatch(initPages([currentPage, nextPage]))
-      } else {
-        dispatch(initPages([prevPage, currentPage, nextPage]))
+    async function init() {
+      console.log('init pages called currentpg:', route.params.pageNumber)
+      const currentPage = await teletextService.getPage(route.params.pageNumber)
+      
+      let nextPage = undefined
+      
+      if (currentPage.nextpg) {
+        nextPage = await teletextService.getPage(Number(currentPage.nextpg))
       }
       
+      if (currentPage && nextPage) {
+        dispatch(initPages([currentPage, nextPage]))
+      } else {
+        dispatch(initPages([currentPage]))
+      }
     }
 
     init()
@@ -74,6 +65,7 @@ function Koti({ route, navigation }) {
       <View style={styles.page}>
         {route.params.pageNumber && (
           <Page
+            flatListRef={flatListRef}
             navigation={navigation}
           />
         )}
@@ -82,7 +74,7 @@ function Koti({ route, navigation }) {
       <View style={styles.textInput}>
         <FontAwesomeIcon size={18} icon={faSearch} color="white" />
         <TextInput
-          style={{color: 'white'}}
+          style={{ color: 'white' }}
           fontSize={15}
           value={input}
           keyboardType="numeric"

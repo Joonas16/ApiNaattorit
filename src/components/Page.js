@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { View, Text, StyleSheet, Dimensions, Animated, FlatList } from "react-native";
 
 import { StateContext } from "../state";
@@ -15,18 +15,14 @@ import teletextService from '../services/teletext'
 
 const { width } = Dimensions.get('screen')
 
-function Page({ navigation }) {
+function Page({ navigation, flatListRef }) {
   const { state, dispatch } = useContext(StateContext)
-  //const [data, setData] = useState(null)
   
-
   const onEndReached = async () => {
      const newPage = await teletextService.getPage(Number(state.pages[state.pages.length - 1].nextpg))
-    // const newNextPage = await teletextService.getPage(Number(state.nextPage.number) + 1)c
     dispatch(addPage(newPage))
-    console.log('end reached')
-
   }
+
   const scrollX = useRef(new Animated.Value(0)).current;
 
   const renderItem = ({ item, index }) => {
@@ -56,7 +52,7 @@ function Page({ navigation }) {
         horizontal
         pagingEnabled
         onEndReached={onEndReached}
-        initialScrollIndex={data.length === 3 ? 1 : 0}
+        ref={flatListRef}
         onEndReachedThreshold={.5}
         snapToAlignment={"start"}
         snapToInterval={width}
