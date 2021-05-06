@@ -5,9 +5,9 @@ export default {
   slug: "ApiNaattoriTTV",
   version: "1.0.0",
   orientation: "portrait",
-  icon: "./assets/icon.png",
+  icon: "./assets/yle.png",
   splash: {
-    image: "./assets/splash.png",
+    image: "./assets/yle.png",
     resizeMode: "contain",
     backgroundColor: "#ffffff",
   },
@@ -20,12 +20,12 @@ export default {
   },
   android: {
     adaptiveIcon: {
-      foregroundImage: "./assets/adaptive-icon.png",
+      foregroundImage: "./assets/yle.png",
       backgroundColor: "#FFFFFF",
     },
   },
   web: {
-    favicon: "./assets/favicon.png",
+    favicon: "./assets/yle.png",
   },
   extra: {
     apiUrl: process.env.API_URL,

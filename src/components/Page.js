@@ -24,13 +24,11 @@ function Page({ navigation }) {
   const nextPage = () => {
     if (state.page.nextpg) {
       dispatch(setPageNumber(Number(state.page.nextpg)))
-      console.log("Next page:", Number(state.page.nextpg));
     }
   };
   const prevPage = () => {
     if (state.page.prevpg) {
       dispatch(setPageNumber(Number(state.page.prevpg)))
-      console.log("Prev page:", Number(state.page.prevpg));
     }
   };
 

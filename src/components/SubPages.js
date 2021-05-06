@@ -11,6 +11,7 @@ import _ from "lodash";
 import AppLoading from 'expo-app-loading';
 import { useFonts} from 'expo-font';
 
+
 /**
  * Flatlistin käyttämä komponentti joka piirtää yhden alisivun rivin.
  * 
@@ -95,7 +96,7 @@ if (Array.isArray(line.run)) {
                     fontFamily: 'Inter-SemiBoldItalic',
                   }}
                 >
-                  <Image style={styles.tinyLogo} source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Ylen_logo.svg/1200px-Ylen_logo.svg.png',}}/> {char.Text} 
+                  <Image style={styles.tinyLogo} source={require('../../assets/yle.png')}/> {char.Text} 
                 </Text>)
               }
             //
