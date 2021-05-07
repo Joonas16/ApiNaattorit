@@ -55,7 +55,7 @@ function App() {
             inactiveBackgroundColor: "#000000",
             labelStyle: { fontSize: 14, marginBottom: Platform.OS == 'ios' ? 25 : 0 },
             keyboardHidesTabBar: true,
-            style: {paddingBottom: Platform.OS == 'ios' && 0}
+            style: { paddingBottom: 0 }
           }}
         >
           <Tab.Screen
