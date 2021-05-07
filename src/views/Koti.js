@@ -10,7 +10,7 @@ import { setPage, setPageNumber } from "../state/actions";
 
 /**
  * Kotinäkymän komponentti, joka avaa oletuksena teksti TV:n sivun 100.
- *
+ * Data haetaan useEffect-hookissa ensimmäisellä renderöinnillä ja silloin, kun propsina saatu sivunumero päivittyy.
  * Renderöi sivun Page-komponentilla.
  */
 

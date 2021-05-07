@@ -13,11 +13,11 @@ import { useFonts} from 'expo-font';
 
 
 /**
- * Flatlistin käyttämä komponentti joka piirtää yhden alisivun rivin.
+ * Flatlistin käyttämä komponentti joka piirtää yhden alasivun rivin.
  * 
  * Ottaa propsina: Yhden alasivun rivin JSON-datan (line) navigaatio-objektin (navigation).
- * Palauttaa: Yhden rivin merkistöstä tekstisisällöt ja link
-t */
+ * Palauttaa: Yhden rivin merkistöstä tekstisisällöt ja linkit
+ */
 
 
 
@@ -135,9 +135,9 @@ if (Array.isArray(line.run)) {
 }
 
 /**
- * Renderöi toistaiseksi vain sivun ensimmäisen alasivun FlatList-komponentilla rivi kerrallaan
- * ("structured")-tyypin dataa
- * Jos muuttujan subPageIndex arvoa muuttaa, näkyvän datan pitäisi vaihtua
+ * Renderöi kaikki sivun alasivut allekkain FlatList-komponentilla rivi kerrallaan
+ * - ("structured")-tyypin dataa
+ *
  */
 
 function SubPages({ data, navigation }) {

@@ -7,7 +7,7 @@ import SubPages from "../components/SubPages";
 import { setPageNumber } from "../state/actions";
 
 /**
- * Yhden sivun datan hakeva komponentti.
+ * Yhden sivun datan näyttävä komponentti.
  * Data haetaan apista Effect-hookilla toistaiseksi renderöinnin alussa,
  * tai silloin kun tilamuuttujassa oleva muuttuja pageNumber muuttuu.
  * Renderöi tekstit riveittäin SubPages-komponentilla.
