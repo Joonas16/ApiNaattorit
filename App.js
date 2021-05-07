@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faHome, faList, faStar } from "@fortawesome/free-solid-svg-icons";
+import { Platform } from 'react-native';
 
 import Koti from "./src/views/Koti";
 import Hakemistot from "./src/views/Hakemistot";
@@ -52,8 +53,9 @@ function App() {
             inactiveTintColor: "#ffffff",
             activeBackgroundColor: "#000000",
             inactiveBackgroundColor: "#000000",
-            labelStyle: { fontSize: 14 },
+            labelStyle: { fontSize: 14, marginBottom: Platform.OS == 'ios' ? 25 : 0 },
             keyboardHidesTabBar: true,
+            style: {paddingBottom: Platform.OS == 'ios' && 0}
           }}
         >
           <Tab.Screen
