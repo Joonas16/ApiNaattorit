@@ -53,7 +53,6 @@ Name | Description | Usage
 [lodash](https://lodash.com/) | JS utility library | Used to filter unique objects of an array
 [expo-sqlite](https://docs.expo.io/versions/latest/sdk/sqlite/) | Database that is persistent across restarts | Used to save user favourite pages
 [@fortawesome](https://fortawesome.com/) | Library of fonts and icons. | Used for fonts and icons.
-[@fortawesome](https://fortawesome.com/) | Library of fonts and icons. | Used for fonts and icons.
 [react-navigation](https://reactnavigation.org/) | For routing and navigation between pages. | Used for routing and navigation in bottom tabs.
 [react-native-swipe-gestures](https://www.npmjs.com/package/react-native-swipe-gestures) | Component for swipe gestures | Used for swiping to next or previous page.
 [react-native-elements](https://reactnativeelements.com/) | Cross Platform React Native UI Toolkit | Provides an all-in-one UI kit for creating apps in react native
