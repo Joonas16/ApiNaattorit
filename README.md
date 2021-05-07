@@ -25,8 +25,25 @@
    npm start
    ```
 
-### Options for local workflow
+## Options for local workflow
 
 - Running from local network with Expo Go, see [Google Play](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=fi&gl=US) or [Apple Store](https://apps.apple.com/us/app/expo-go/id982107779)
 - Running with Android emulator, [Instructions](https://docs.expo.io/workflow/android-studio-emulator/)
 - Running with iOS simulator, [Instructions](https://docs.expo.io/workflow/ios-simulator/)
+
+## Key technologies & libraries
+
+Name | Description | Usage
+--- | --- | ---
+[Expo](https://docs.expo.io/) | Framework and a platform for universal React applications | Used to bootstrap the project and for development workflow
+[axios](https://www.npmjs.com/package/axios) | Promise based HTTP client | Used to fetch teletext data from API
+[dotenv](https://www.npmjs.com/package/dotenv) | Module that loads environment variables from .env file | Used for storing API keys locally without committing them to git
+[lodash](https://lodash.com/) | JS utility library | Used to filter unique objects of an array
+[expo-sqlite](https://docs.expo.io/versions/latest/sdk/sqlite/) | Database that is persistent across restarts | Used to save user favourite pages
+[@fortawesome](https://fortawesome.com/) | Library of fonts and icons. | Used for fonts and icons.
+
+
+## Run with Expo Go
+### Scan QR-code with Expo Go-app 
+
+![Expo QR-Code](./assets/expo.png)
