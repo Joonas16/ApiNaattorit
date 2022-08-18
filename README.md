@@ -62,5 +62,3 @@ Name | Description | Usage
 ### Scan QR-code with Expo Go-app 
 
 ![Expo QR-Code](./assets/expo.png)
-
-To get this to work on iOS, send your expo user email to joonas.aaltonen16@gmail.com
